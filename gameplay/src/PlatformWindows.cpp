@@ -9,6 +9,7 @@
 #include "ScriptController.h"
 #include <GL/wglew.h>
 #include <windowsx.h>
+#include <shellapi.h>
 #ifdef USE_XINPUT
 #include <XInput.h>
 #endif
@@ -1452,6 +1453,20 @@ bool Platform::mouseEventInternal(Mouse::MouseEvent evt, int x, int y, int wheel
     {
         return Game::getInstance()->getScriptController()->mouseEvent(evt, x, y, wheelDelta);
     }
+}
+
+bool Platform::launchURL(const char* url)
+{
+    if (url == NULL || *url == '\0')
+        return false;
+ 
+    // Success when result code > 32
+    int len = MultiByteToWideChar(CP_ACP, 0, url, -1, NULL, 0);
+    wchar_t* wurl = new wchar_t[len];
+    MultiByteToWideChar(CP_ACP, 0, url, -1, wurl, len);
+    int r = (int)ShellExecute(NULL, NULL, wurl, NULL, NULL, SW_SHOWNORMAL);
+    SAFE_DELETE_ARRAY(wurl);
+    return (r > 32);
 }
 
 }

@@ -30,6 +30,7 @@ static Window   __window;
 static int __windowSize[2];
 static GLXContext __context;
 static Window __attachToWindow;
+static Atom __atomWmDeleteWindow;
 
 namespace gameplay
 {
@@ -355,6 +356,124 @@ static Keyboard::Key getKey(KeySym sym)
     }
 }
 
+/**
+ * Returns the unicode value for the given keycode or zero if the key is not a valid printable character.
+ */
+static int getUnicode(Keyboard::Key key)
+{
+
+    switch (key)
+    {
+    case Keyboard::KEY_BACKSPACE:
+        return 0x0008;
+    case Keyboard::KEY_TAB:
+        return 0x0009;
+    case Keyboard::KEY_RETURN:
+    case Keyboard::KEY_KP_ENTER:
+        return 0x000A;
+    case Keyboard::KEY_ESCAPE:
+        return 0x001B;
+    case Keyboard::KEY_SPACE:
+    case Keyboard::KEY_EXCLAM:
+    case Keyboard::KEY_QUOTE:
+    case Keyboard::KEY_NUMBER:
+    case Keyboard::KEY_DOLLAR:
+    case Keyboard::KEY_PERCENT:
+    case Keyboard::KEY_CIRCUMFLEX:
+    case Keyboard::KEY_AMPERSAND:
+    case Keyboard::KEY_APOSTROPHE:
+    case Keyboard::KEY_LEFT_PARENTHESIS:
+    case Keyboard::KEY_RIGHT_PARENTHESIS:
+    case Keyboard::KEY_ASTERISK:
+    case Keyboard::KEY_PLUS:
+    case Keyboard::KEY_COMMA:
+    case Keyboard::KEY_MINUS:
+    case Keyboard::KEY_PERIOD:
+    case Keyboard::KEY_SLASH:
+    case Keyboard::KEY_ZERO:
+    case Keyboard::KEY_ONE:
+    case Keyboard::KEY_TWO:
+    case Keyboard::KEY_THREE:
+    case Keyboard::KEY_FOUR:
+    case Keyboard::KEY_FIVE:
+    case Keyboard::KEY_SIX:
+    case Keyboard::KEY_SEVEN:
+    case Keyboard::KEY_EIGHT:
+    case Keyboard::KEY_NINE:
+    case Keyboard::KEY_COLON:
+    case Keyboard::KEY_SEMICOLON:
+    case Keyboard::KEY_LESS_THAN:
+    case Keyboard::KEY_EQUAL:
+    case Keyboard::KEY_GREATER_THAN:
+    case Keyboard::KEY_QUESTION:
+    case Keyboard::KEY_AT:
+    case Keyboard::KEY_CAPITAL_A:
+    case Keyboard::KEY_CAPITAL_B:
+    case Keyboard::KEY_CAPITAL_C:
+    case Keyboard::KEY_CAPITAL_D:
+    case Keyboard::KEY_CAPITAL_E:
+    case Keyboard::KEY_CAPITAL_F:
+    case Keyboard::KEY_CAPITAL_G:
+    case Keyboard::KEY_CAPITAL_H:
+    case Keyboard::KEY_CAPITAL_I:
+    case Keyboard::KEY_CAPITAL_J:
+    case Keyboard::KEY_CAPITAL_K:
+    case Keyboard::KEY_CAPITAL_L:
+    case Keyboard::KEY_CAPITAL_M:
+    case Keyboard::KEY_CAPITAL_N:
+    case Keyboard::KEY_CAPITAL_O:
+    case Keyboard::KEY_CAPITAL_P:
+    case Keyboard::KEY_CAPITAL_Q:
+    case Keyboard::KEY_CAPITAL_R:
+    case Keyboard::KEY_CAPITAL_S:
+    case Keyboard::KEY_CAPITAL_T:
+    case Keyboard::KEY_CAPITAL_U:
+    case Keyboard::KEY_CAPITAL_V:
+    case Keyboard::KEY_CAPITAL_W:
+    case Keyboard::KEY_CAPITAL_X:
+    case Keyboard::KEY_CAPITAL_Y:
+    case Keyboard::KEY_CAPITAL_Z:
+    case Keyboard::KEY_LEFT_BRACKET:
+    case Keyboard::KEY_BACK_SLASH:
+    case Keyboard::KEY_RIGHT_BRACKET:
+    case Keyboard::KEY_UNDERSCORE:
+    case Keyboard::KEY_GRAVE:
+    case Keyboard::KEY_A:
+    case Keyboard::KEY_B:
+    case Keyboard::KEY_C:
+    case Keyboard::KEY_D:
+    case Keyboard::KEY_E:
+    case Keyboard::KEY_F:
+    case Keyboard::KEY_G:
+    case Keyboard::KEY_H:
+    case Keyboard::KEY_I:
+    case Keyboard::KEY_J:
+    case Keyboard::KEY_K:
+    case Keyboard::KEY_L:
+    case Keyboard::KEY_M:
+    case Keyboard::KEY_N:
+    case Keyboard::KEY_O:
+    case Keyboard::KEY_P:
+    case Keyboard::KEY_Q:
+    case Keyboard::KEY_R:
+    case Keyboard::KEY_S:
+    case Keyboard::KEY_T:
+    case Keyboard::KEY_U:
+    case Keyboard::KEY_V:
+    case Keyboard::KEY_W:
+    case Keyboard::KEY_X:
+    case Keyboard::KEY_Y:
+    case Keyboard::KEY_Z:
+    case Keyboard::KEY_LEFT_BRACE:
+    case Keyboard::KEY_BAR:
+    case Keyboard::KEY_RIGHT_BRACE:
+    case Keyboard::KEY_TILDE:
+        return key;
+    default:
+        return 0;
+    }
+}
+
 extern void print(const char* format, ...)
 {
     GP_ASSERT(format);
@@ -380,6 +499,39 @@ Platform* Platform::create(Game* game, void* attachToWindow)
     __attachToWindow = (Window)attachToWindow;
     FileSystem::setResourcePath("./");
     Platform* platform = new Platform(game);
+
+    // Get window configuration
+
+    // Default values
+    const char *title = NULL;
+    int __x = 0, __y = 0, __width = 1280, __height = 800;
+    bool fullscreen = false;
+    if (game->getConfig())
+    {
+        Properties* config = game->getConfig()->getNamespace("window", true);
+        if (config)
+        {
+            // Read window title.
+            title = config->getString("title");
+
+            // Read window rect.
+            int x = config->getInt("x");
+            if (x != 0) __x = x;
+
+            int y = config->getInt("y");
+            if (y != 0) __y = y;
+            
+            int width = config->getInt("width");
+            if (width != 0) __width = width;
+
+            int height = config->getInt("height");
+            if (height != 0) __height = height;
+
+            fullscreen = config->getBool("fullscreen");
+
+
+        }
+    }
 
     // Get the display and initialize.
     __display = XOpenDisplay(NULL);
@@ -450,12 +602,37 @@ Platform* Platform::create(Game* game, void* attachToWindow)
     GLint winMask;
     winMask = CWBorderPixel | CWBitGravity | CWEventMask| CWColormap;
    
-    __window = XCreateWindow(__display, DefaultRootWindow(__display), 0, 0, 1280, 720, 0, 
+    __window = XCreateWindow(__display, DefaultRootWindow(__display), __x, __y, __width, __height, 0, 
                             visualInfo->depth, InputOutput, visualInfo->visual, winMask,
                             &winAttribs); 
-    
+
+    // Tell the window manager that it should send the delete window notification through ClientMessage
+    __atomWmDeleteWindow = XInternAtom(__display, "WM_DELETE_WINDOW", False);
+    XSetWMProtocols(__display, __window, &__atomWmDeleteWindow, 1);
+
     XMapWindow(__display, __window);
-    XStoreName(__display, __window, "");
+
+    // Send fullscreen atom message to the window; most window managers respect WM_STATE messages
+    // Note: fullscreen mode will use native desktop resolution and won't care about width/height specified
+    if (fullscreen)
+    {
+        XEvent xev;
+        Atom atomWm_state = XInternAtom(__display, "_NET_WM_STATE", False);
+        Atom atomFullscreen = XInternAtom(__display, "_NET_WM_STATE_FULLSCREEN", False);
+
+        memset(&xev, 0, sizeof(xev));
+        xev.type = ClientMessage;
+        xev.xclient.window = __window;
+        xev.xclient.message_type = atomWm_state;
+        xev.xclient.format = 32;
+        xev.xclient.data.l[0] = 1;
+        xev.xclient.data.l[1] = atomFullscreen;
+        xev.xclient.data.l[2] = 0;
+
+        XSendEvent(__display, DefaultRootWindow(__display), false, SubstructureNotifyMask | SubstructureRedirectMask, &xev);
+    }
+    
+    XStoreName(__display, __window, title ? title : "");
 
     __context = glXCreateContext(__display, visualInfo, NULL, True);
     if(!__context)
@@ -550,15 +727,23 @@ int Platform::enterMessagePump()
     // Message loop.
     while (true)
     {
-        int ret = poll( xpolls, 1, 16 );
-
+        poll( xpolls, 1, 16 );
         // handle all pending events in one block 
-        while (ret && XPending(__display))
+        while (XPending(__display))    
         {
            XNextEvent(__display, &evt);
         
             switch (evt.type) 
             {
+            case ClientMessage:
+                {
+                    // Handle destroy window message correctly
+                    if (evt.xclient.data.l[0] == __atomWmDeleteWindow)
+                    {
+                        _game->exit();
+                    }
+                }
+                break;
             case DestroyNotify :
                 {
                     cleanupX11();
@@ -574,9 +759,25 @@ int Platform::enterMessagePump()
 
             case KeyPress:
                 {
-                    KeySym sym = XLookupKeysym(&evt.xkey, 0);
+                    KeySym sym = XLookupKeysym(&evt.xkey, (evt.xkey.state & shiftDown) ? 1 : 0);
+
+
+                    //TempSym needed because XConvertCase operates on two keysyms: One lower and the other upper, we are only interested in the upper case
+                    KeySym tempSym;
+                    if(capsOn && !shiftDown)
+                        XConvertCase(sym,  &tempSym, &sym);
+
                     Keyboard::Key key = getKey(sym);
                     gameplay::Platform::keyEventInternal(gameplay::Keyboard::KEY_PRESS, key);
+
+                    if(key == Keyboard::KEY_CAPS_LOCK)
+                        capsOn = !capsOn;
+                    if(key == Keyboard::KEY_SHIFT)
+                        shiftDown = true;
+
+                    if(int character = getUnicode(key))
+                        gameplay::Platform::keyEventInternal(gameplay::Keyboard::KEY_CHAR, character);
+
                 }
                 break;
 
@@ -599,6 +800,9 @@ int Platform::enterMessagePump()
                     KeySym sym = XLookupKeysym(&evt.xkey, 0);
                     Keyboard::Key key = getKey(sym);
                     gameplay::Platform::keyEventInternal(gameplay::Keyboard::KEY_RELEASE, key);
+
+                    if(key == Keyboard::KEY_SHIFT)
+                        shiftDown = false;
                 }
                 break;
 
@@ -688,7 +892,13 @@ int Platform::enterMessagePump()
         }
 
         if (_game)
+        {
+            // Game state will be uninitialized if game was closed through Game::exit()
+            if (_game->getState() == Game::UNINITIALIZED)
+                break;            
+            
             _game->frame();
+        }
 
         glXSwapBuffers(__display, __window);
     }
@@ -927,6 +1137,21 @@ unsigned int Platform::getGamepadTriggerCount(unsigned int gamepadHandle)
 float Platform::getGamepadTriggerValue(unsigned int gamepadHandle, unsigned int triggerIndex)
 {
     return 0.0f;
+}
+
+bool Platform::launchURL(const char* url)
+{
+    if (url == NULL || *url == '\0')
+        return false;
+
+    int len = strlen(url);
+    
+    char* cmd = new char[11 + len];
+    sprintf(cmd, "xdg-open %s", url);
+    int r = system(cmd);
+    SAFE_DELETE_ARRAY(cmd);
+    
+    return (r == 0);
 }
 
 }
