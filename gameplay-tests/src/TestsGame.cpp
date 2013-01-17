@@ -64,6 +64,7 @@ void TestsGame::initialize()
             testButton->release();
         }
     }
+	_testSelectForm->setState(Control::FOCUS);
 }
 
 void TestsGame::finalize()
@@ -197,6 +198,12 @@ void TestsGame::controlEvent(Control* control, EventType evt)
             }
         }
     }
+}
+
+void TestsGame::gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad)
+{
+    if (_activeTest)
+        _activeTest->gamepadEvent(evt, gamepad);
 }
 
 void TestsGame::runTest(void* func)

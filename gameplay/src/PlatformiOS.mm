@@ -570,8 +570,27 @@ int getUnicode(int key);
 {
     if((evt & Gesture::GESTURE_SWIPE) == Gesture::GESTURE_SWIPE && _swipeRecognizer == NULL)
     {
+        // right swipe (default)
         _swipeRecognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
         [self addGestureRecognizer:_swipeRecognizer];
+
+        // left swipe
+        UISwipeGestureRecognizer *swipeGesture = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+        swipeGesture.direction = UISwipeGestureRecognizerDirectionLeft;
+        [self addGestureRecognizer:swipeGesture];
+        [swipeGesture release];
+        
+        // up swipe
+        UISwipeGestureRecognizer *swipeGesture2 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+        swipeGesture2.direction = UISwipeGestureRecognizerDirectionUp;
+        [self addGestureRecognizer:swipeGesture2];
+        [swipeGesture2 release];
+        
+        // down swipe
+        UISwipeGestureRecognizer *swipeGesture3 = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeGesture:)];
+        swipeGesture3.direction = UISwipeGestureRecognizerDirectionDown;
+        [self addGestureRecognizer:swipeGesture3];
+        [swipeGesture3 release];
     }
     if((evt & Gesture::GESTURE_PINCH) == Gesture::GESTURE_PINCH && _pinchRecognizer == NULL)
     {
@@ -1391,64 +1410,8 @@ bool Platform::isGestureRegistered(Gesture::GestureEvent evt)
     return [__view isGestureRegistered:evt];
 }
 
-
-unsigned int Platform::getGamepadsConnected()
+void Platform::pollGamepadState(Gamepad* gamepad)
 {
-    return 0;
-}
-
-bool Platform::isGamepadConnected(unsigned int gamepadHandle)
-{
-    return false;
-}
-
-const char* Platform::getGamepadId(unsigned int gamepadHandle)
-{
-    return NULL;
-}
-
-unsigned int Platform::getGamepadButtonCount(unsigned int gamepadHandle)
-{
-    return 0;
-}
-
-bool Platform::getGamepadButtonState(unsigned int gamepadHandle, unsigned int buttonIndex)
-{
-    return false;
-}
-
-unsigned int Platform::getGamepadJoystickCount(unsigned int gamepadHandle)
-{
-    return 0;
-}
-
-bool Platform::isGamepadJoystickActive(unsigned int gamepadHandle, unsigned int joystickIndex)
-{
-    return false;
-}
-
-float Platform::getGamepadJoystickAxisX(unsigned int gamepadHandle, unsigned int joystickIndex)
-{
-    return 0.0f;
-}
-
-float Platform::getGamepadJoystickAxisY(unsigned int gamepadHandle, unsigned int joystickIndex)
-{
-    return 0.0f;
-}
-
-void Platform::getGamepadJoystickAxisValues(unsigned int gamepadHandle, unsigned int joystickIndex, Vector2* outValue)
-{
-}
-
-unsigned int Platform::getGamepadTriggerCount(unsigned int gamepadHandle)
-{
-    return 0;
-}
-
-float Platform::getGamepadTriggerValue(unsigned int gamepadHandle, unsigned int triggerIndex)
-{
-    return 0.0f;
 }
 
 bool Platform::launchURL(const char *url)

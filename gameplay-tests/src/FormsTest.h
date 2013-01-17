@@ -8,11 +8,10 @@ using namespace gameplay;
 class FormsTest : public Test, Control::Listener
 {
 public:
+    
     FormsTest();
 
-    virtual ~FormsTest();
-
-    static FormsTest* create();
+    void gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad);
 
 protected:
     void initialize();
@@ -24,6 +23,12 @@ protected:
     void controlEvent(Control* control, EventType evt);
 
 private:
+    
+    
+    void formChanged();
+    
+    void createTestForm(Theme* theme);
+    
     Scene* _scene;
     Node* _formNode;
     Node* _formNodeParent;
@@ -31,15 +36,13 @@ private:
     Form* _activeForm;
     std::vector<Form*> _forms;
     Gamepad* _gamepad;
+    Gamepad* _virtualGamepad;
+    Gamepad* _physicalGamepad;
     unsigned int _keyFlags;
     bool _touched;
     int _touchX;
     unsigned int _formIndex;
     std::vector<const char*> _formFiles;
-
-    void formChanged();
-    void createTestForm(Theme* theme);
-
     std::string _testString;
 };
 

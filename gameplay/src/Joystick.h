@@ -113,6 +113,13 @@ public:
      */
     const char* getType() const;
 
+    /**
+     * Gets the index of this joystick across all joysticks on a form.
+     *
+     * @return The index of this joystick on a form.
+     */
+    inline const unsigned int getIndex() const;
+
 protected:
     
     /**
@@ -176,6 +183,7 @@ private:
     Vector2 _displacement;
     Vector2* _innerSize;
     Vector2* _outerSize;
+    unsigned int _index;
 };
 
 }

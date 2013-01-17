@@ -34,12 +34,13 @@ form basicControls
     {
         style = topLeftNoBorder
         position = 55, 315
-        size = 190, 80
+        size = 190, 60
         orientation = HORIZONTAL
         min = -100
         max = 100
         value = 0
         text = This is a slider.
+        valueTextVisible = true
     }
 
     label textBoxLabel

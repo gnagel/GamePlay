@@ -15,12 +15,10 @@ const Game::ClearFlags& Test::CLEAR_COLOR_DEPTH_STENCIL = Game::CLEAR_COLOR_DEPT
 
 Test::Test()
 {
-    
 }
 
 Test::~Test()
 {
-    
 }
 
 bool Test::isVsync()
@@ -83,6 +81,11 @@ const Rectangle& Test::getViewport() const
     return Game::getInstance()->getViewport();
 }
 
+void Test::setViewport(const Rectangle& viewport)
+{
+	Game::getInstance()->setViewport(viewport);
+}
+
 unsigned int Test::getWidth() const
 {
     return Game::getInstance()->getWidth();
@@ -141,6 +144,21 @@ bool Test::mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelDelta)
     return false;
 }
 
+bool Test::hasMouse()
+{
+    return Game::getInstance()->hasMouse();
+}
+
+bool Test::isMouseCaptured()
+{
+    return Game::getInstance()->isMouseCaptured();
+}
+
+void Test::setMouseCaptured(bool captured)
+{
+    Game::getInstance()->setMouseCaptured(captured);
+}
+
 void Test::setMultiTouch(bool enabled)
 {
     Game::getInstance()->setMultiTouch(enabled);
@@ -183,36 +201,18 @@ bool Test::isGestureRegistered(Gesture::GestureEvent evt)
 
 void Test::gestureSwipeEvent(int x, int y, int direction)
 {
-
 }
 
 void Test::gesturePinchEvent(int x, int y, float scale)
 {
-
 }
 
 void Test::gestureTapEvent(int x, int y)
 {
-
 }
 
 void Test::gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad)
 {
-    Game::getInstance()->gamepadEvent(evt, gamepad);
-}
-
-unsigned int Test::getGamepadCount() const
-{
-    return Game::getInstance()->getGamepadCount();
-}
-unsigned int Test::getGamepadsConnected()
-{
-    return Game::getInstance()->getGamepadsConnected();
-}
-
-Gamepad* Test::getGamepad(unsigned int index) const
-{
-    return Game::getInstance()->getGamepad(index);
 }
 
 void Test::drawFrameRate(Font* font, const Vector4& color, unsigned int x, unsigned int y, unsigned int fps)
