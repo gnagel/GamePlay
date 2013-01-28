@@ -173,7 +173,7 @@ fi
 # Copy Microsoft Visual Studio project files
 #############################################
 cp "gameplay-template/gameplay-template.vcxproj" "$projPath/$projName.vcxproj"
-aliassedinplace "s*TEMPLATE_PROJECT*$projectName*g" "$projPath/$projName.vcxproj"
+aliassedinplace "s*TEMPLATE_PROJECT*$projName*g" "$projPath/$projName.vcxproj"
 aliassedinplace "s*TemplateGame*$className*g" "$projPath/$projName.vcxproj"
 aliassedinplace "s*GAMEPLAY_PATH*$gpPath*g" "$projPath/$projName.vcxproj"
 
@@ -198,6 +198,7 @@ aliassedinplace "s*TEMPLATE_UUID*$uuid*g" "$projPath/$projName-macosx.plist"
 aliassedinplace "s*TEMPLATE_AUTHOR*$author*g" "$projPath/$projName-macosx.plist"
 
 cp "gameplay-template/TEMPLATE_PROJECT-ios.plist" "$projPath/$projName-ios.plist"
+cp "gameplay-template/Default-568h@2x.png" "$projPath/Default-568h@2x.png"
 aliassedinplace "s*TEMPLATE_TITLE*$title*g" "$projPath/$projName-ios.plist"
 aliassedinplace "s*TEMPLATE_UUID*$uuid*g" "$projPath/$projName-ios.plist"
 aliassedinplace "s*TEMPLATE_AUTHOR*$author*g" "$projPath/$projName-ios.plist"

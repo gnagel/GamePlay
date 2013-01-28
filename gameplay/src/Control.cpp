@@ -43,6 +43,8 @@ void Control::initialize(Theme::Style* style, Properties* properties)
 
     _consumeInputEvents = properties->getBool("consumeInputEvents", true);
 
+    _visible = properties->getBool("visible", true);
+
     if (properties->exists("zIndex"))
     {
         _zIndex = properties->getInt("zIndex");
@@ -760,9 +762,6 @@ void Control::addSpecificListener(Control::Listener* listener, Listener::EventTy
 
 bool Control::touchEvent(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
 {
-    if (!isEnabled())
-        return false;
-
     switch (evt)
     {
     case Touch::TOUCH_PRESS:
@@ -816,11 +815,6 @@ bool Control::keyEvent(Keyboard::KeyEvent evt, int key)
 
 bool Control::mouseEvent(Mouse::MouseEvent evt, int x, int y, int wheelDelta)
 {
-    if (!isEnabled())
-    {
-        return false;
-    }
-
     // By default, mouse events are either interpreted as touch events or ignored.
     switch (evt)
     {
@@ -1041,9 +1035,6 @@ void Control::drawText(const Rectangle& position)
 
 void Control::draw(SpriteBatch* spriteBatch, const Rectangle& clip, bool needsClear, bool cleared, float targetHeight)
 {
-    if (!_visible)
-        return;
-
     if (needsClear)
     {
         GL_ASSERT( glEnable(GL_SCISSOR_TEST) );
@@ -1051,6 +1042,9 @@ void Control::draw(SpriteBatch* spriteBatch, const Rectangle& clip, bool needsCl
         Game::getInstance()->clear(Game::CLEAR_COLOR, Vector4::zero(), 1.0f, 0);
         GL_ASSERT( glDisable(GL_SCISSOR_TEST) );
     }
+
+    if (!_visible)
+        return;
 
     spriteBatch->start();
     drawBorder(spriteBatch, clip);

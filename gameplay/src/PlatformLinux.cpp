@@ -513,7 +513,7 @@ Platform* Platform::create(Game* game, void* attachToWindow)
      
     // Get the window configuration values
     const char *title = NULL;
-    int __x = 0, __y = 0, __width = 1280, __height = 800;
+    int __x = 0, __y = 0, __width = 1280, __height = 800, __samples = 0;
     bool fullscreen = false;
     if (game->getConfig())
     {
@@ -528,6 +528,7 @@ Platform* Platform::create(Game* game, void* attachToWindow)
             int y = config->getInt("y");
             int width = config->getInt("width");
             int height = config->getInt("height");
+            int samples = config->getInt("samples");
             fullscreen = config->getBool("fullscreen");
 
             if (fullscreen && width == 0 && height == 0)
@@ -541,6 +542,7 @@ Platform* Platform::create(Game* game, void* attachToWindow)
             if (y != 0) __y = y;
             if (width != 0) __width = width;
             if (height != 0) __height = height;
+            if (samples != 0) __samples = samples;
         }
     }
 
@@ -578,6 +580,8 @@ Platform* Platform::create(Game* game, void* attachToWindow)
         GLX_GREEN_SIZE,     8,
         GLX_BLUE_SIZE,      8,
         GLX_DOUBLEBUFFER,   True,
+        GLX_SAMPLE_BUFFERS, __samples > 0 ? 1 : 0,
+        GLX_SAMPLES,        __samples,
         0
     };
     GLXFBConfig* configs;
@@ -1117,6 +1121,22 @@ bool Platform::mouseEventInternal(Mouse::MouseEvent evt, int x, int y, int wheel
     {
         return Game::getInstance()->getScriptController()->mouseEvent(evt, x, y, wheelDelta);
     }
+}
+
+void Platform::gamepadEventConnectedInternal(GamepadHandle handle,  unsigned int buttonCount, unsigned int joystickCount, unsigned int triggerCount,
+                                             unsigned int vendorId, unsigned int productId, const char* vendorString, const char* productString)
+{
+    Gamepad::add(handle, buttonCount, joystickCount, triggerCount, vendorId, productId, vendorString, productString);
+}
+
+void Platform::gamepadEventDisconnectedInternal(GamepadHandle handle)
+{
+    Gamepad::remove(handle);
+}
+
+void Platform::shutdownInternal()
+{
+    Game::getInstance()->shutdown();
 }
 
 bool Platform::isGestureSupported(Gesture::GestureEvent evt)

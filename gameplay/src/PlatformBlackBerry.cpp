@@ -491,38 +491,35 @@ void gesture_callback(gesture_base_t* gesture, mtouch_event_t* event, void* para
     }
 }
 
-#ifdef __BB10__
-
-static const int __VIDs[] = {
-    0x1038,
-    0x057e,
-    0x25b6
-};
-
-static const int __PIDs[] = {
-    0x1412,
-    0x0306,
-    0x0001
-};
+#ifdef USE_BLACKBERRY_GAMEPAD
 
 static const char* __vendorStrings[] =
 {
     "SteelSeries",
     "Nintendo",
-    "Fructel"
 };
 
 static const char* __productStrings[] =
 {
     "FREE",
     "Wii Remote",
-    "Gametel"
 };
 
-static const unsigned int __knownGamepads = 3;
+static const int __VIDs[] = {
+    0x1038,
+    0x057e,
+};
 
-void loadGamepad(GamepadHandle handle, int* buttonCount, int* joystickCount, int* productId, int* vendorId, char* id, char* productString, char* vendorString)
+static const int __PIDs[] = {
+    0x1412,
+    0x0306,
+};
+
+static const unsigned int __knownGamepads = 2;
+
+void queryGamepad(GamepadHandle handle, int* buttonCount, int* joystickCount, int* productId, int* vendorId, char* productString, char* vendorString)
 {
+    char id[128];
     screen_get_device_property_iv(handle, SCREEN_PROPERTY_BUTTON_COUNT, buttonCount);
     screen_get_device_property_cv(handle, SCREEN_PROPERTY_ID_STRING, 128, id);
     screen_get_device_property_cv(handle, SCREEN_PROPERTY_PRODUCT, 64, productString);
@@ -627,9 +624,9 @@ void Platform::pollGamepadState(Gamepad* gamepad)
     }
 }
 #else
-void Platform::getGamepadButtonValues(GamepadHandle handle, unsigned int* out) { }
-void Platform::getGamepadJoystickValues(GamepadHandle handle, unsigned int joystickIndex, Vector2* outValue) { }
-void Platform::getGamepadTriggerValue(GamepadHandle handle, unsigned int triggerIndex, float* out) { }
+void Platform::pollGamepadState(Gamepad* gamepad)
+{
+}
 #endif
 
 Platform::Platform(Game* game)
@@ -685,8 +682,6 @@ Platform* Platform::create(Game* game, void* attachToWindow)
 {
     FileSystem::setResourcePath("./app/native/");
     Platform* platform = new Platform(game);
-
-    screen_device_t* screenDevs;
 
     // Query game config
     int samples = 0;
@@ -975,13 +970,18 @@ Platform* Platform::create(Game* game, void* attachToWindow)
         glIsVertexArray = (PFNGLISVERTEXARRAYOESPROC)eglGetProcAddress("glIsVertexArrayOES");
     }
 
-    // Discover gamepad devices.
+ #ifdef USE_BLACKBERRY_GAMEPAD
+
+    screen_device_t* screenDevs;
+
+    // Discover initial gamepad devices.
     int count;
     screen_get_context_property_iv(__screenContext, SCREEN_PROPERTY_DEVICE_COUNT, &count);
     screenDevs = (screen_device_t*)calloc(count, sizeof(screen_device_t));
     screen_get_context_property_pv(__screenContext, SCREEN_PROPERTY_DEVICES, (void**)screenDevs);
 
-	for (int i = 0; i < count; i++) {
+	for (int i = 0; i < count; i++) 
+    {
 	    int type;
         screen_get_device_property_iv(screenDevs[i], SCREEN_PROPERTY_TYPE, &type);
 
@@ -991,20 +991,18 @@ Platform* Platform::create(Game* game, void* attachToWindow)
             int joystickCount = 0;
             int productId;
             int vendorId;
-            char id[128];
             char productString[64];
             char vendorString[64];
-            loadGamepad(screenDevs[i], &buttonCount, &joystickCount, &productId, &vendorId, id, productString, vendorString);
-            Gamepad::add(id, screenDevs[i], buttonCount, joystickCount, 0, vendorId, productId, vendorString, productString);
+            queryGamepad(screenDevs[i], &buttonCount, &joystickCount, &productId, &vendorId, productString, vendorString);
+            Platform::gamepadEventConnectedInternal(screenDevs[i], buttonCount, joystickCount, 0, vendorId, productId, vendorString, productString);
         }
 	}
 	free(screenDevs);
+#endif
 
     return platform;
 
 error:
-
-    // TODO: cleanup
 
     return NULL;
 }
@@ -1223,7 +1221,7 @@ int Platform::enterMessagePump()
                         }
                         break;
                     }
-#ifdef __BB10__
+#ifdef USE_BLACKBERRY_GAMEPAD
                     case SCREEN_EVENT_DEVICE:
                     {
                         // A device was attached or removed.
@@ -1243,16 +1241,15 @@ int Platform::enterMessagePump()
                                 int joystickCount = 0;
                                 int productId;
                                 int vendorId;
-                                char id[128];
                                 char productString[64];
                                 char vendorString[64];
-                                loadGamepad(device, &buttonCount, &joystickCount, &productId, &vendorId, id, productString, vendorString);
-                                Gamepad::add(id, device, buttonCount, joystickCount, 0, vendorId, productId, vendorString, productString);
+                                queryGamepad(device, &buttonCount, &joystickCount, &productId, &vendorId, productString, vendorString);
+                                Platform::gamepadEventConnectedInternal(device, buttonCount, joystickCount, 0, vendorId, productId, vendorString, productString);
                             }
                         }
                         else
                         {
-                            Gamepad::remove(device);
+                            Platform::gamepadEventDisconnectedInternal(device);
                         }
 
                         break;
@@ -1292,7 +1289,10 @@ int Platform::enterMessagePump()
                     break;
                 }
                 case NAVIGATOR_EXIT:
-                    _game->exit();
+                	// Call Game::shutdown directly, instead of Game::exit.
+                	// We need to do this since exit() queues a request to shutdown for the
+                	// next frame, which will never get executed because we are suspended.
+                    _game->shutdown();
                     break;
                 }
             }
@@ -1330,7 +1330,7 @@ int Platform::enterMessagePump()
             rc = eglSwapBuffers(__eglDisplay, __eglSurface);
             if (rc != EGL_TRUE)
             {
-                _game->exit();
+                _game->shutdown();
                 perror("eglSwapBuffers");
                 break;
             }
@@ -1519,6 +1519,22 @@ bool Platform::mouseEventInternal(Mouse::MouseEvent evt, int x, int y, int wheel
     {
         return Game::getInstance()->getScriptController()->mouseEvent(evt, x, y, wheelDelta);
     }
+}
+
+void Platform::gamepadEventConnectedInternal(GamepadHandle handle,  unsigned int buttonCount, unsigned int joystickCount, unsigned int triggerCount,
+                                             unsigned int vendorId, unsigned int productId, const char* vendorString, const char* productString)
+{
+    Gamepad::add(handle, buttonCount, joystickCount, triggerCount, vendorId, productId, vendorString, productString);
+}
+
+void Platform::gamepadEventDisconnectedInternal(GamepadHandle handle)
+{
+    Gamepad::remove(handle);
+}
+
+void Platform::shutdownInternal()
+{
+    Game::getInstance()->shutdown();
 }
 
 bool Platform::isGestureSupported(Gesture::GestureEvent evt)
