@@ -6,33 +6,6 @@
 	objectVersion = 46;
 	objects = {
 
-/* Begin PBXAggregateTarget section */
-		BD2636EB16CF5EB000CFE15F /* framework-ios */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = BD2636EC16CF5EB000CFE15F /* Build configuration list for PBXAggregateTarget "framework-ios" */;
-			buildPhases = (
-				BD2636F116CF5EDD00CFE15F /* ShellScript */,
-			);
-			dependencies = (
-				BD2636F016CF5EC800CFE15F /* PBXTargetDependency */,
-			);
-			name = "framework-ios";
-			productName = "framework-ios";
-		};
-		BD26371816CF7DA600CFE15F /* framework-macosx */ = {
-			isa = PBXAggregateTarget;
-			buildConfigurationList = BD26371916CF7DA700CFE15F /* Build configuration list for PBXAggregateTarget "framework-macosx" */;
-			buildPhases = (
-				BD26373916CF872600CFE15F /* ShellScript */,
-			);
-			dependencies = (
-				BD26371D16CF7DB600CFE15F /* PBXTargetDependency */,
-			);
-			name = "framework-macosx";
-			productName = "framework-macosx";
-		};
-/* End PBXAggregateTarget section */
-
 /* Begin PBXBuildFile section */
 		4201819014A41B18008C3F56 /* MeshBatch.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4201818D14A41B18008C3F56 /* MeshBatch.cpp */; };
 		4201819114A41B18008C3F56 /* MeshBatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 4201818E14A41B18008C3F56 /* MeshBatch.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -109,6 +82,18 @@
 		42789FDF15B0E83700866F5B /* AIStateMachine.h in Headers */ = {isa = PBXBuildFile; fileRef = 42789FCB15B0E83700866F5B /* AIStateMachine.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		428390991489D6E800E2B2F5 /* SceneLoader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 428390971489D6E800E2B2F5 /* SceneLoader.cpp */; };
 		4283909A1489D6E800E2B2F5 /* SceneLoader.h in Headers */ = {isa = PBXBuildFile; fileRef = 428390981489D6E800E2B2F5 /* SceneLoader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		42A5031116E8F06500F0246C /* ImageControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42A5030F16E8F06500F0246C /* ImageControl.cpp */; };
+		42A5031216E8F06500F0246C /* ImageControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42A5030F16E8F06500F0246C /* ImageControl.cpp */; };
+		42A5031316E8F06500F0246C /* ImageControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42A5031016E8F06500F0246C /* ImageControl.h */; };
+		42A5031416E8F06500F0246C /* ImageControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42A5031016E8F06500F0246C /* ImageControl.h */; };
+		42A5031716E8F08900F0246C /* lua_ImageControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42A5031516E8F08900F0246C /* lua_ImageControl.cpp */; };
+		42A5031816E8F08900F0246C /* lua_ImageControl.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42A5031516E8F08900F0246C /* lua_ImageControl.cpp */; };
+		42A5031916E8F08900F0246C /* lua_ImageControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42A5031616E8F08900F0246C /* lua_ImageControl.h */; };
+		42A5031A16E8F08900F0246C /* lua_ImageControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 42A5031616E8F08900F0246C /* lua_ImageControl.h */; };
+		42A5031D16E8F0B800F0246C /* lua_TerrainListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42A5031B16E8F0B800F0246C /* lua_TerrainListener.cpp */; };
+		42A5031E16E8F0B800F0246C /* lua_TerrainListener.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42A5031B16E8F0B800F0246C /* lua_TerrainListener.cpp */; };
+		42A5031F16E8F0B800F0246C /* lua_TerrainListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 42A5031C16E8F0B800F0246C /* lua_TerrainListener.h */; };
+		42A5032016E8F0B800F0246C /* lua_TerrainListener.h in Headers */ = {isa = PBXBuildFile; fileRef = 42A5031C16E8F0B800F0246C /* lua_TerrainListener.h */; };
 		42B7FAE315B08049002BB8C3 /* ScreenDisplayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42B7FADD15B08049002BB8C3 /* ScreenDisplayer.cpp */; };
 		42B7FAE415B08049002BB8C3 /* ScreenDisplayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42B7FADD15B08049002BB8C3 /* ScreenDisplayer.cpp */; };
 		42B7FAE515B08049002BB8C3 /* ScriptController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 42B7FADE15B08049002BB8C3 /* ScriptController.cpp */; };
@@ -1170,6 +1155,8 @@
 		BD26373616CF865B00CFE15F /* Vector2.inl in Headers */ = {isa = PBXBuildFile; fileRef = 42CD0E39147D8FF50000361E /* Vector2.inl */; settings = {ATTRIBUTES = (Public, ); }; };
 		BD26373716CF865B00CFE15F /* Vector3.inl in Headers */ = {isa = PBXBuildFile; fileRef = 42CD0E3C147D8FF50000361E /* Vector3.inl */; settings = {ATTRIBUTES = (Public, ); }; };
 		BD26373816CF865B00CFE15F /* Vector4.inl in Headers */ = {isa = PBXBuildFile; fileRef = 42CD0E3F147D8FF50000361E /* Vector4.inl */; settings = {ATTRIBUTES = (Public, ); }; };
+		DD1FF47216DBD8F9000B42EF /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD1FF47116DBD8F9000B42EF /* Platform.cpp */; };
+		DD1FF47316DBD8F9000B42EF /* Platform.cpp in Sources */ = {isa = PBXBuildFile; fileRef = DD1FF47116DBD8F9000B42EF /* Platform.cpp */; };
 		F1616ABC1614E24B008DD8B7 /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F1616ABB1614E24B008DD8B7 /* MathUtil.cpp */; };
 		F1616ABD1614E24B008DD8B7 /* MathUtil.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F1616ABB1614E24B008DD8B7 /* MathUtil.cpp */; };
 		F18024A51627000D001BFF87 /* gameplay-main-ios.mm in Sources */ = {isa = PBXBuildFile; fileRef = F18024A31627000D001BFF87 /* gameplay-main-ios.mm */; };
@@ -1177,23 +1164,6 @@
 		F18024A71627000D001BFF87 /* gameplay-main-macosx.mm in Sources */ = {isa = PBXBuildFile; fileRef = F18024A41627000D001BFF87 /* gameplay-main-macosx.mm */; };
 		F18024A81627000D001BFF87 /* gameplay-main-macosx.mm in Sources */ = {isa = PBXBuildFile; fileRef = F18024A41627000D001BFF87 /* gameplay-main-macosx.mm */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		BD2636EF16CF5EC800CFE15F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4234D98C14686BB6003031B3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 5B04C52B14BFCFE100EB0071;
-			remoteInfo = "gameplay-ios";
-		};
-		BD26371C16CF7DB600CFE15F /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 4234D98C14686BB6003031B3 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 4234D99914686C52003031B3;
-			remoteInfo = "gameplay-macosx";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		4201818D14A41B18008C3F56 /* MeshBatch.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MeshBatch.cpp; path = src/MeshBatch.cpp; sourceTree = SOURCE_ROOT; };
@@ -1244,6 +1214,12 @@
 		42789FCB15B0E83700866F5B /* AIStateMachine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AIStateMachine.h; path = src/AIStateMachine.h; sourceTree = SOURCE_ROOT; };
 		428390971489D6E800E2B2F5 /* SceneLoader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SceneLoader.cpp; path = src/SceneLoader.cpp; sourceTree = SOURCE_ROOT; };
 		428390981489D6E800E2B2F5 /* SceneLoader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SceneLoader.h; path = src/SceneLoader.h; sourceTree = SOURCE_ROOT; };
+		42A5030F16E8F06500F0246C /* ImageControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ImageControl.cpp; path = src/ImageControl.cpp; sourceTree = SOURCE_ROOT; };
+		42A5031016E8F06500F0246C /* ImageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ImageControl.h; path = src/ImageControl.h; sourceTree = SOURCE_ROOT; };
+		42A5031516E8F08900F0246C /* lua_ImageControl.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_ImageControl.cpp; sourceTree = "<group>"; };
+		42A5031616E8F08900F0246C /* lua_ImageControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lua_ImageControl.h; sourceTree = "<group>"; };
+		42A5031B16E8F0B800F0246C /* lua_TerrainListener.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = lua_TerrainListener.cpp; sourceTree = "<group>"; };
+		42A5031C16E8F0B800F0246C /* lua_TerrainListener.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = lua_TerrainListener.h; sourceTree = "<group>"; };
 		42B701F615B08177002BB8C3 /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = "../external-deps/lua/lib/macosx/liblua.a"; sourceTree = "<group>"; };
 		42B701F815B081B6002BB8C3 /* liblua.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = liblua.a; path = "../external-deps/lua/lib/ios/armv7/liblua.a"; sourceTree = "<group>"; };
 		42B7FADD15B08049002BB8C3 /* ScreenDisplayer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ScreenDisplayer.cpp; path = src/ScreenDisplayer.cpp; sourceTree = SOURCE_ROOT; };
@@ -1790,6 +1766,7 @@
 		BD2636E216CF5B7400CFE15F /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/OpenGLES.framework; sourceTree = DEVELOPER_DIR; };
 		BD2636E316CF5B7400CFE15F /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/QuartzCore.framework; sourceTree = DEVELOPER_DIR; };
 		BD2636E416CF5B7400CFE15F /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS6.1.sdk/System/Library/Frameworks/UIKit.framework; sourceTree = DEVELOPER_DIR; };
+		DD1FF47116DBD8F9000B42EF /* Platform.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Platform.cpp; path = src/Platform.cpp; sourceTree = SOURCE_ROOT; };
 		F1616ABB1614E24B008DD8B7 /* MathUtil.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = MathUtil.cpp; path = src/MathUtil.cpp; sourceTree = SOURCE_ROOT; };
 		F18024A31627000D001BFF87 /* gameplay-main-ios.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "gameplay-main-ios.mm"; path = "src/gameplay-main-ios.mm"; sourceTree = SOURCE_ROOT; };
 		F18024A41627000D001BFF87 /* gameplay-main-macosx.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = "gameplay-main-macosx.mm"; path = "src/gameplay-main-macosx.mm"; sourceTree = SOURCE_ROOT; };
@@ -1931,6 +1908,8 @@
 				4208DEE614A4079F00D3C511 /* Image.cpp */,
 				4208DEE714A4079F00D3C511 /* Image.h */,
 				4208DEE814A4079F00D3C511 /* Image.inl */,
+				42A5030F16E8F06500F0246C /* ImageControl.cpp */,
+				42A5031016E8F06500F0246C /* ImageControl.h */,
 				42CD0DE4147D8FF50000361E /* Joint.cpp */,
 				42CD0DE5147D8FF50000361E /* Joint.h */,
 				4239DDE9157545A1005EA3F6 /* Joystick.cpp */,
@@ -2012,6 +1991,7 @@
 				421FBD4C1602818800A61BC0 /* PhysicsVehicle.h */,
 				421FBD4D1602818800A61BC0 /* PhysicsVehicleWheel.cpp */,
 				421FBD4E1602818800A61BC0 /* PhysicsVehicleWheel.h */,
+				DD1FF47116DBD8F9000B42EF /* Platform.cpp */,
 				42CD0E19147D8FF50000361E /* Platform.h */,
 				42CD0E1A147D8FF50000361E /* PlatformMacOSX.mm */,
 				5B04C5CC14BFD48500EB0071 /* PlatformiOS.mm */,
@@ -2221,6 +2201,8 @@
 				B661730A16A619A60083A307 /* lua_HeightField.h */,
 				42BCD39115EFD0F300C0E076 /* lua_Image.cpp */,
 				42BCD39215EFD0F300C0E076 /* lua_Image.h */,
+				42A5031516E8F08900F0246C /* lua_ImageControl.cpp */,
+				42A5031616E8F08900F0246C /* lua_ImageControl.h */,
 				42BCD39315EFD0F300C0E076 /* lua_ImageFormat.cpp */,
 				42BCD39415EFD0F300C0E076 /* lua_ImageFormat.h */,
 				42BCD39515EFD0F300C0E076 /* lua_Joint.cpp */,
@@ -2385,6 +2367,8 @@
 				B661731016A619D30083A307 /* lua_Terrain.h */,
 				B661731116A619D30083A307 /* lua_TerrainFlags.cpp */,
 				B661731216A619D30083A307 /* lua_TerrainFlags.h */,
+				42A5031B16E8F0B800F0246C /* lua_TerrainListener.cpp */,
+				42A5031C16E8F0B800F0246C /* lua_TerrainListener.h */,
 				42BCD42915EFD0F300C0E076 /* lua_TextBox.cpp */,
 				42BCD42A15EFD0F300C0E076 /* lua_TextBox.h */,
 				42BCD42B15EFD0F300C0E076 /* lua_Texture.cpp */,
@@ -2805,6 +2789,9 @@
 				BD26373616CF865B00CFE15F /* Vector2.inl in Headers */,
 				BD26373716CF865B00CFE15F /* Vector3.inl in Headers */,
 				BD26373816CF865B00CFE15F /* Vector4.inl in Headers */,
+				42A5031316E8F06500F0246C /* ImageControl.h in Headers */,
+				42A5031916E8F08900F0246C /* lua_ImageControl.h in Headers */,
+				42A5031F16E8F0B800F0246C /* lua_TerrainListener.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3108,6 +3095,9 @@
 				BD26371316CF779100CFE15F /* PhysicsSpringConstraint.inl in Headers */,
 				BD26371416CF779100CFE15F /* ScriptController.inl in Headers */,
 				BD26371516CF787600CFE15F /* TimeListener.h in Headers */,
+				42A5031416E8F06500F0246C /* ImageControl.h in Headers */,
+				42A5031A16E8F08900F0246C /* lua_ImageControl.h in Headers */,
+				42A5032016E8F0B800F0246C /* lua_TerrainListener.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3172,8 +3162,6 @@
 			targets = (
 				4234D99914686C52003031B3 /* gameplay-macosx */,
 				5B04C52B14BFCFE100EB0071 /* gameplay-ios */,
-				BD26371816CF7DA600CFE15F /* framework-macosx */,
-				BD2636EB16CF5EB000CFE15F /* framework-ios */,
 			);
 		};
 /* End PBXProject section */
@@ -3192,19 +3180,6 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n";
 		};
-		BD2636F116CF5EDD00CFE15F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\nset +u\n# Avoid recursively calling this script.\nif [[ $SF_MASTER_SCRIPT_RUNNING ]]\nthen\nexit 0\nfi\nset -u\nexport SF_MASTER_SCRIPT_RUNNING=1\n\nSF_TARGET_NAME=${PROJECT_NAME}\nSF_EXECUTABLE_PATH=\"lib${SF_TARGET_NAME}.a\"\nSF_WRAPPER_NAME=\"${SF_TARGET_NAME}.framework\"\n\n# The following conditionals come from\n# https://github.com/kstenerud/iOS-Universal-Framework\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\nSF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\nSF_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SF_SDK_PLATFORM\" = \"iphoneos\" ]]\nthen\nSF_OTHER_PLATFORM=iphonesimulator\nelse\nSF_OTHER_PLATFORM=iphoneos\nfi\n\necho \"Build product dir: \"$BUILT_PRODUCTS_DIR\necho \"SF SDK Platform: \"$SF_SDK_PLATFORM\n\nif [[ \"$BUILT_PRODUCTS_DIR\" =~ (.*)$SF_SDK_PLATFORM$ ]]\nthen\nSF_OTHER_BUILT_PRODUCTS_DIR=\"${BASH_REMATCH[1]}${SF_OTHER_PLATFORM}\"\nelse\necho \"Could not find platform name from build products directory: $BUILT_PRODUCTS_DIR\"\nexit 1\nfi\n\n# Build the other platform.\nxcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${SF_OTHER_PLATFORM}${SF_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\" $ACTION\n\n# Smash the two static libraries into one fat binary and store it in the .framework\nlipo -create \"${BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" -output \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n\n# Copy the binary to the other architecture folder to have a complete framework in both.\ncp -a \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n\n";
-		};
 		BD26372016CF7E1700CFE15F /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -3217,19 +3192,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nmkdir -p \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n\n# Link the \"Current\" version to \"A\"\n/bin/ln -sfh A \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/Current\"\n/bin/ln -sfh Versions/Current/Headers \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Headers\"\n/bin/ln -sfh \"Versions/Current/${PRODUCT_NAME}\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/${PRODUCT_NAME}\"\n\n# The -a ensures that the headers maintain the source modification date so that we don't constantly\n# cause propagating rebuilds of files that import these headers.\n/bin/cp -a \"${TARGET_BUILD_DIR}/${PUBLIC_HEADERS_FOLDER_PATH}/\" \"${BUILT_PRODUCTS_DIR}/${PRODUCT_NAME}.framework/Versions/A/Headers\"\n";
-		};
-		BD26373916CF872600CFE15F /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\nset +u\n# Avoid recursively calling this script.\nif [[ $SF_MASTER_SCRIPT_RUNNING ]]\nthen\nexit 0\nfi\nset -u\nexport SF_MASTER_SCRIPT_RUNNING=1\n\nSF_TARGET_NAME=${PROJECT_NAME}\nSF_EXECUTABLE_PATH=\"lib${SF_TARGET_NAME}.a\"\nSF_WRAPPER_NAME=\"${SF_TARGET_NAME}.framework\"\n\n# The following conditionals come from\n# https://github.com/kstenerud/iOS-Universal-Framework\n\nif [[ \"$SDK_NAME\" =~ ([A-Za-z]+) ]]\nthen\nSF_SDK_PLATFORM=${BASH_REMATCH[1]}\nelse\necho \"Could not find platform name from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\nif [[ \"$SDK_NAME\" =~ ([0-9]+.*$) ]]\nthen\nSF_SDK_VERSION=${BASH_REMATCH[1]}\nelse\necho \"Could not find sdk version from SDK_NAME: $SDK_NAME\"\nexit 1\nfi\n\n\n\n# Build the other platform.\n#xcodebuild -project \"${PROJECT_FILE_PATH}\" -target \"${TARGET_NAME}\" -configuration \"${CONFIGURATION}\" -sdk ${SF_OTHER_PLATFORM}${SF_SDK_VERSION} BUILD_DIR=\"${BUILD_DIR}\" OBJROOT=\"${OBJROOT}\" BUILD_ROOT=\"${BUILD_ROOT}\" SYMROOT=\"${SYMROOT}\" $ACTION\n\n# Smash the two static libraries into one fat binary and store it in the .framework\nlipo -create \"${BUILT_PRODUCTS_DIR}/${SF_EXECUTABLE_PATH}\" -output \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n\n# Copy the binary to the other architecture folder to have a complete framework in both.\n#cp -a \"${BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\" \"${SF_OTHER_BUILT_PRODUCTS_DIR}/${SF_WRAPPER_NAME}/Versions/A/${SF_TARGET_NAME}\"\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -3507,6 +3469,10 @@
 				B661732916A61A140083A307 /* HeightField.cpp in Sources */,
 				B661732F16A61A4B0083A307 /* lua_RenderStateDepthFunction.cpp in Sources */,
 				B661733516A61B430083A307 /* lua_GamepadButtonMapping.cpp in Sources */,
+				DD1FF47216DBD8F9000B42EF /* Platform.cpp in Sources */,
+				42A5031116E8F06500F0246C /* ImageControl.cpp in Sources */,
+				42A5031716E8F08900F0246C /* lua_ImageControl.cpp in Sources */,
+				42A5031D16E8F0B800F0246C /* lua_TerrainListener.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3783,23 +3749,14 @@
 				B661732A16A61A140083A307 /* HeightField.cpp in Sources */,
 				B661733016A61A4B0083A307 /* lua_RenderStateDepthFunction.cpp in Sources */,
 				B661733616A61B430083A307 /* lua_GamepadButtonMapping.cpp in Sources */,
+				DD1FF47316DBD8F9000B42EF /* Platform.cpp in Sources */,
+				42A5031216E8F06500F0246C /* ImageControl.cpp in Sources */,
+				42A5031816E8F08900F0246C /* lua_ImageControl.cpp in Sources */,
+				42A5031E16E8F0B800F0246C /* lua_TerrainListener.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		BD2636F016CF5EC800CFE15F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 5B04C52B14BFCFE100EB0071 /* gameplay-ios */;
-			targetProxy = BD2636EF16CF5EC800CFE15F /* PBXContainerItemProxy */;
-		};
-		BD26371D16CF7DB600CFE15F /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 4234D99914686C52003031B3 /* gameplay-macosx */;
-			targetProxy = BD26371C16CF7DB600CFE15F /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		4234D99114686BB6003031B3 /* Debug */ = {
@@ -3995,46 +3952,6 @@
 			};
 			name = Release;
 		};
-		BD2636ED16CF5EB000CFE15F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				VALID_ARCHS = "armv7 armv7s i386";
-			};
-			name = Debug;
-		};
-		BD2636EE16CF5EB000CFE15F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SDKROOT = iphoneos;
-				SUPPORTED_PLATFORMS = "iphonesimulator iphoneos";
-				VALID_ARCHS = "armv7 armv7s i386";
-			};
-			name = Release;
-		};
-		BD26371A16CF7DA700CFE15F /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ONLY_ACTIVE_ARCH = NO;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = macosx;
-				VALID_ARCHS = "i386 x86_64";
-			};
-			name = Debug;
-		};
-		BD26371B16CF7DA700CFE15F /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SUPPORTED_PLATFORMS = macosx;
-				VALID_ARCHS = "i386 x86_64";
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -4061,24 +3978,6 @@
 			buildConfigurations = (
 				5B04C5C814BFCFE100EB0071 /* Debug */,
 				5B04C5C914BFCFE100EB0071 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BD2636EC16CF5EB000CFE15F /* Build configuration list for PBXAggregateTarget "framework-ios" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BD2636ED16CF5EB000CFE15F /* Debug */,
-				BD2636EE16CF5EB000CFE15F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		BD26371916CF7DA700CFE15F /* Build configuration list for PBXAggregateTarget "framework-macosx" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				BD26371A16CF7DA700CFE15F /* Debug */,
-				BD26371B16CF7DA700CFE15F /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -25,6 +25,9 @@
 
 using namespace std;
 
+int __argc = 0;
+char** __argv = 0;
+
 enum GamepadAxisInfoFlags
 {
     GP_AXIS_SKIP = 0x1,
@@ -1434,6 +1437,14 @@ namespace gameplay
         *roll = __roll;
     }
 
+    void Platform::getArguments(int* argc, char*** argv)
+    {
+        if (argc)
+            *argc = __argc;
+        if (argv)
+            *argv = __argv;
+    }
+
     bool Platform::hasMouse()
     {
         return true;
@@ -1505,51 +1516,6 @@ namespace gameplay
         // not supported
     }
 
-    void Platform::touchEventInternal(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
-    {
-        if (!Form::touchEventInternal(evt, x, y, contactIndex))
-        {
-            Game::getInstance()->touchEvent(evt, x, y, contactIndex);
-            Game::getInstance()->getScriptController()->touchEvent(evt, x, y, contactIndex);
-        }
-    }
-
-    void Platform::keyEventInternal(Keyboard::KeyEvent evt, int key)
-    {
-        if (!Form::keyEventInternal(evt, key))
-        {
-            Game::getInstance()->keyEvent(evt, key);
-            Game::getInstance()->getScriptController()->keyEvent(evt, key);
-        }
-    }
-
-    bool Platform::mouseEventInternal(Mouse::MouseEvent evt, int x, int y, int wheelDelta)
-    {
-        if (Form::mouseEventInternal(evt, x, y, wheelDelta))
-        {
-            return true;
-        }
-        else if (Game::getInstance()->mouseEvent(evt, x, y, wheelDelta))
-        {
-            return true;
-        }
-        else
-        {
-            return Game::getInstance()->getScriptController()->mouseEvent(evt, x, y, wheelDelta);
-        }
-    }
-    
-        void Platform::gamepadEventConnectedInternal(GamepadHandle handle,  unsigned int buttonCount, unsigned int joystickCount, unsigned int triggerCount,
-                unsigned int vendorId, unsigned int productId, const char* vendorString, const char* productString)
-        {
-            Gamepad::add(handle, buttonCount, joystickCount, triggerCount, vendorId, productId, vendorString, productString);
-        }
-
-    void Platform::gamepadEventDisconnectedInternal(GamepadHandle handle)
-    {
-        Gamepad::remove(handle);
-    }
-
     void Platform::shutdownInternal()
     {
         closeAllGamepads();
@@ -1591,10 +1557,12 @@ namespace gameplay
                         long curMappingIndex = -1;
                         if(tryGetGamepadMappedButton(gpInfo, jevent.number, curMappingIndex))
                         {
+                            unsigned int buttons = 0;
                             if (jevent.value)
-                                gamepad->_buttons |= (1 << curMappingIndex);
+                                buttons |= (1 << curMappingIndex);
                             else
-                                gamepad->_buttons &= ~(1 << curMappingIndex);
+                                buttons &= ~(1 << curMappingIndex);
+                            gamepad->setButtons(buttons);
                         }
                         break;
                     }
@@ -1615,27 +1583,32 @@ namespace gameplay
                                     bool not_js_axis = false;
                                     if((jsInfo->flags & GP_AXIS_IS_DPAD))
                                     {
+                                        unsigned int buttons = 0;
                                         if(jevent.value != 0)
-                                            gamepad->_buttons |= (1 << (jevent.value > 0 ? jsInfo->mappedPosArg : jsInfo->mappedNegArg));
+                                            buttons |= (1 << (jevent.value > 0 ? jsInfo->mappedPosArg : jsInfo->mappedNegArg));
                                         else
                                         {
-                                            gamepad->_buttons &= ~(1 << jsInfo->mappedPosArg);
-                                            gamepad->_buttons &= ~(1 << jsInfo->mappedNegArg);
+                                            buttons &= ~(1 << jsInfo->mappedPosArg);
+                                            buttons &= ~(1 << jsInfo->mappedNegArg);
                                         }
+                                        gamepad->setButtons(buttons);
                                         not_js_axis = true;
                                     }
                                     if((jsInfo->flags & GP_AXIS_IS_TRIGGER))
                                     {
-                                        gamepad->_triggers[jsInfo->mappedPosArg] = val;
+                                        gamepad->setTriggerValue(jsInfo->mappedPosArg, val);
                                         not_js_axis = true;
                                     }
 
                                     if(!not_js_axis)
                                     {
+                                        Vector2 jsVals;
+                                        gamepad->getJoystickValues(jsInfo->joystickIndex,&jsVals);
                                         if(jsInfo->flags & GP_AXIS_IS_XAXIS)
-                                            gamepad->_joysticks[jsInfo->joystickIndex].x = val;
+                                            jsVals.x = val;
                                         else
-                                            gamepad->_joysticks[jsInfo->joystickIndex].y = val;
+                                            jsVals.y = val;
+                                        gamepad->setJoystickValue(jsInfo->joystickIndex,jsVals.x,jsVals.y);
                                     }
                                 }
                             }

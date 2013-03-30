@@ -26,6 +26,8 @@
 
 using namespace std;
 
+int __argc = 0;
+char** __argv = 0;
 struct timespec __timespec;
 static double __timeStart;
 static double __timeAbsolute;
@@ -573,7 +575,9 @@ void queryGamepad(GamepadHandle handle, int* buttonCount, int* joystickCount, in
 
 void Platform::pollGamepadState(Gamepad* gamepad)
 {
-    screen_get_device_property_iv(gamepad->_handle, SCREEN_PROPERTY_BUTTONS, (int*)&gamepad->_buttons);
+	unsigned int buttons;
+    screen_get_device_property_iv(gamepad->_handle, SCREEN_PROPERTY_BUTTONS, (int*)&buttons);
+	gamepad->setButtons(buttons);
 
     unsigned int i;
     for (i = 0; i < gamepad->_joystickCount; ++i)
@@ -602,7 +606,7 @@ void Platform::pollGamepadState(Gamepad* gamepad)
         x *= (x < 0) ? 0.0078125f : 0.0078740157480315f;
         y *= (y > 0) ? 0.0078125f : 0.0078740157480315f;
 
-        gamepad->_joysticks[i].set(x, y);        
+		gamepad->setJoystickValue(i, x, y);
     }
 
     for (i = 0; i < gamepad->_triggerCount; ++i)
@@ -621,7 +625,7 @@ void Platform::pollGamepadState(Gamepad* gamepad)
         }
 
         float value = (float)analog[2] * 0.0078125f;
-        gamepad->_triggers[i] = value;
+		gamepad->setTriggerValue(i, value);
     }
 }
 #else
@@ -1472,6 +1476,14 @@ void Platform::getAccelerometerValues(float* pitch, float* roll)
     }
 }
 
+void Platform::getArguments(int* argc, char*** argv)
+{
+    if (argc)
+        *argc = __argc;
+    if (argv)
+        *argv = __argv;
+}
+
 bool Platform::hasMouse()
 {
     // not supported
@@ -1506,51 +1518,6 @@ void Platform::displayKeyboard(bool display)
         virtualkeyboard_show();
     else
         virtualkeyboard_hide();
-}
-
-void Platform::touchEventInternal(Touch::TouchEvent evt, int x, int y, unsigned int contactIndex)
-{
-    if (!Form::touchEventInternal(evt, x, y, contactIndex))
-    {
-        Game::getInstance()->touchEvent(evt, x, y, contactIndex);
-        Game::getInstance()->getScriptController()->touchEvent(evt, x, y, contactIndex);
-    }
-}
-
-void Platform::keyEventInternal(Keyboard::KeyEvent evt, int key)
-{
-    if (!Form::keyEventInternal(evt, key))
-    {
-        Game::getInstance()->keyEvent(evt, key);
-        Game::getInstance()->getScriptController()->keyEvent(evt, key);
-    }
-}
-
-bool Platform::mouseEventInternal(Mouse::MouseEvent evt, int x, int y, int wheelDelta)
-{
-    if (Form::mouseEventInternal(evt, x, y, wheelDelta))
-    {
-        return true;
-    }
-    else if (Game::getInstance()->mouseEvent(evt, x, y, wheelDelta))
-    {
-        return true;
-    }
-    else
-    {
-        return Game::getInstance()->getScriptController()->mouseEvent(evt, x, y, wheelDelta);
-    }
-}
-
-void Platform::gamepadEventConnectedInternal(GamepadHandle handle,  unsigned int buttonCount, unsigned int joystickCount, unsigned int triggerCount,
-                                             unsigned int vendorId, unsigned int productId, const char* vendorString, const char* productString)
-{
-    Gamepad::add(handle, buttonCount, joystickCount, triggerCount, vendorId, productId, vendorString, productString);
-}
-
-void Platform::gamepadEventDisconnectedInternal(GamepadHandle handle)
-{
-    Gamepad::remove(handle);
 }
 
 void Platform::shutdownInternal()

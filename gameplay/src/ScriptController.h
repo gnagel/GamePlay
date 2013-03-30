@@ -3,7 +3,8 @@
 
 #include "Base.h"
 #include "Game.h"
-#include "Gamepad.h"
+//#include "Gamepad.h"
+#include "Control.h"
 
 namespace gameplay
 {
@@ -349,6 +350,7 @@ class ScriptController
     friend class Platform;
 
 public:
+
     /**
      * Loads the given script file and executes its global code.
      * 
@@ -365,6 +367,30 @@ public:
      * @return The function that the URL references.
      */
     std::string loadUrl(const char* url);
+
+    /**
+     * Registers the given script callback.
+     *
+     * The 'callback' parameter must be one of the supported global callback
+     * event functions. The following strings are accepted: initialize, finalize,
+     * update, render, resizeEvent, keyEvent, touchEvent, mouseEvent, gamepadEvent.
+     * Signatures for the registered script function must match that of the
+     * corresponding signatures of these events on the Game class.
+     *
+     * @param callback The script callback to register for.
+     * @param function The name of the script function to register.
+     */
+    void registerCallback(const char* callback, const char* function);
+
+    /**
+     * Unregisters the given script callback.
+     *
+     * @param callback The script callback to unregister for.
+     * @param function The name of the script function to unregister.
+     *
+     * @see registerCallback(const char*, const char*)
+     */
+    void unregisterCallback(const char* callback, const char* function);
 
     /**
      * Calls the specified no-parameter Lua function.
@@ -732,7 +758,7 @@ public:
 private:
 
     /**
-     * Represents a Lua callback function binding.
+     * Represents a callback function that can be registered for.
      */
     enum ScriptCallback
     {
@@ -740,6 +766,7 @@ private:
         UPDATE,
         RENDER,
         FINALIZE,
+        RESIZE_EVENT,
         KEY_EVENT,
         MOUSE_EVENT,
         TOUCH_EVENT,
@@ -794,6 +821,14 @@ private:
     void render(float elapsedTime);
 
     /**
+     * Script callback for game resize events.
+     *
+     * @param width The new width of the game window content area.
+     * @param height The new height of the game window content area.
+     */
+    void resizeEvent(unsigned int width, unsigned int height);
+
+    /**
      * Script keyboard callback on key events.
      *
      * @param evt The key event that occurred.
@@ -838,7 +873,7 @@ private:
      * @param evt The gamepad event that occurred.
      * @param gamepad the gamepad the event occurred on
      */
-    void gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad);
+    void gamepadEvent(Gamepad::GamepadEvent evt, Gamepad* gamepad, unsigned int analogIndex = 0);
 
     /**
      * Calls the specified Lua function using the given parameters.
@@ -865,14 +900,6 @@ private:
      * @param list The variable argument list.
      */
     void executeFunctionHelper(int resultCount, const char* func, const char* args, va_list* list);
-
-    /**
-     * Registers the given script callback.
-     * 
-     * @param callback The script callback to register for.
-     * @param function The name of the function within the Lua script to call.
-     */
-    void registerCallback(ScriptCallback callback, const std::string& function);
 
     /**
      * Converts the given string to a valid script callback enumeration value
@@ -936,7 +963,7 @@ private:
     lua_State* _lua;
     unsigned int _returnCount;
     std::map<std::string, std::vector<std::string> > _hierarchy;
-    std::string* _callbacks[CALLBACK_COUNT];
+    std::vector<std::string> _callbacks[CALLBACK_COUNT];
     std::set<std::string> _loadedScripts;
     std::vector<luaStringEnumConversionFunction> _stringFromEnum;
 };

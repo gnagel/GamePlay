@@ -126,6 +126,8 @@ void Node::addChild(Node* child)
 
     ++_childCount;
 
+    setBoundsDirty();
+
     if (_notifyHierarchyChanged)
     {
         hierarchyChanged();
@@ -768,6 +770,8 @@ void Node::setLight(Light* light)
             _light->addRef();
             _light->setNode(this);
         }
+
+        setBoundsDirty();
     }
 }
 
@@ -818,6 +822,8 @@ void Node::setTerrain(Terrain* terrain)
             _terrain->addRef();
             _terrain->setNode(this);
         }
+
+        setBoundsDirty();
     }
 }
 
@@ -874,7 +880,27 @@ const BoundingSphere& Node::getBoundingSphere() const
                 _bounds.merge(_model->getMesh()->getBoundingSphere());
             }
         }
-        else
+        if (_light)
+        {
+            switch (_light->getLightType())
+            {
+            case Light::POINT:
+                if (empty)
+                {
+                    _bounds.set(Vector3::zero(), _light->getRange());
+                    empty = false;
+                }
+                else
+                {
+                    _bounds.merge(BoundingSphere(Vector3::zero(), _light->getRange()));
+                }
+                break;
+            case Light::SPOT:
+                // TODO: Implement spot light bounds
+                break;
+            }
+        }
+        if (empty)
         {
             // Empty bounding sphere, set the world translation with zero radius
             worldMatrix.getTranslation(&_bounds.center);
