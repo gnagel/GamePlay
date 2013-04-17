@@ -24,7 +24,8 @@ EncoderArguments::EncoderArguments(size_t argc, const char** argv) :
     _fontPreview(false),
     _textOutput(false),
     _optimizeAnimations(false),
-    _animationGrouping(ANIMATIONGROUP_PROMPT)
+    _animationGrouping(ANIMATIONGROUP_PROMPT),
+    _outputMaterial(false)
 {
     __instance = this;
 
@@ -247,6 +248,7 @@ void EncoderArguments::printUsage() const
     LOG(1, "  -g:none\tDo not prompt to group animations.\n");
     LOG(1, "  -g <node id> <animation id>\n" \
         "\t\tGroup all animation channels targeting the nodes into a new animation.\n");
+    LOG(1, "  -m\t\tOutput material file for scene.\n");
     LOG(1, "  -tb <node id>\n" \
         "\t\tGenerates tangents and binormals for the given node.\n");
     LOG(1, "  -oa\n" \
@@ -296,6 +298,11 @@ bool EncoderArguments::textOutputEnabled() const
 bool EncoderArguments::optimizeAnimationsEnabled() const
 {
     return _optimizeAnimations;
+}
+
+bool EncoderArguments::outputMaterialEnabled() const
+{
+    return _outputMaterial;
 }
 
 const char* EncoderArguments::getNodeId() const
@@ -476,6 +483,13 @@ void EncoderArguments::readOption(const std::vector<std::string>& options, size_
                     return;
                 }
             }
+        }
+        break;
+    case 'm':
+        if (str.compare("-m") == 0)
+        {
+            // generate a material file
+            _outputMaterial = true;
         }
         break;
     case 'n':
